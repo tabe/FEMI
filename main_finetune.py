@@ -289,7 +289,7 @@ def main(args):
                 lstm_features = layers.Dense(10, activation='relu', kernel_initializer=normal_initializer)(lstm_features)
                 features = layers.BatchNormalization()(features)
                 age_features = layers.BatchNormalization()(age_features)
-                feats = keras.layers.concatenate([lstm_features, age_features])
+                feats = layers.concatenate([lstm_features, age_features])
             
             if exclude_age:
                 feats = lstm_features
@@ -299,17 +299,17 @@ def main(args):
                 features = layers.Dense(10, activation='relu', kernel_initializer=normal_initializer)(features)
                 features = layers.BatchNormalization()(features)
                 age_features = layers.BatchNormalization()(age_features)
-                feats = keras.layers.concatenate([features, age_features])
+                feats = layers.concatenate([features, age_features])
             if exclude_age:
                 feats = features
 
-        binary_model_output = keras.layers.Dense(1, activation="sigmoid", name='binary_output', kernel_initializer=normal_initializer)(feats)
-        regression_model_output = keras.layers.Dense(1, activation="linear", name='regression_output', kernel_initializer=normal_initializer)(feats)
+        binary_model_output = layers.Dense(1, activation="sigmoid", name='binary_output', kernel_initializer=normal_initializer)(feats)
+        regression_model_output = layers.Dense(1, activation="linear", name='regression_output', kernel_initializer=normal_initializer)(feats)
 
         if freeze_encoder:
-            opt = keras.optimizers.AdamW(learning_rate=LEARNING_RATE, weight_decay=0)
+            opt = tf.keras.optimizers.AdamW(learning_rate=LEARNING_RATE, weight_decay=0)
         else:
-            opt = keras.optimizers.AdamW(learning_rate=LEARNING_RATE, weight_decay=0.05, beta_1=0.9, beta_2=0.999)
+            opt = tf.keras.optimizers.AdamW(learning_rate=LEARNING_RATE, weight_decay=0.05, beta_1=0.9, beta_2=0.999)
         
         lr_metric = get_lr_metric(opt)
 
